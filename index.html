@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Circu</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div id="hdr"><div class="logo" id="logo" role="button" tabindex="0" title="About Circu" onclick="showAbout()" onkeydown="if(event.key=='Enter'||event.key==' '){event.preventDefault();showAbout()}"><i style="background:#e5484d">C</i><i style="background:#22b24c">I</i><i style="background:#2f80ed">R</i><i style="background:#f5a800">U</i></div><input id="pname" value="My decoder circuit" size="18"><span class="sp"></span><button class="tab on">Circuits</button><button class="tab" onclick="togSide()">Components</button><button class="tab" id="thm" onclick="theme()">Dark mode</button></div>
+<div id="tb"><button class="ib" id="bCopy" title="Copy (Ctrl+C)" onclick="copyC()"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg></button><button class="ib" id="bPaste" title="Paste (Ctrl+V)" onclick="pasteC()"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><rect x="5" y="5" width="14" height="16" rx="2"/><path d="M9 5V3.5h6V5M9 11h6M9 15h6"/></svg></button><button class="ib" id="bDel" title="Delete" onclick="del()"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13M10 11v5M14 11v5"/></svg></button><span class="sep"></span><button class="ib" id="bUndo" title="Undo (Ctrl+Z)" onclick="undo()"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M9 6L4 11l5 5"/><path d="M4 11h10a5 5 0 0 1 0 10h-4"/></svg></button><button class="ib" id="bRedo" title="Redo (Ctrl+Y)" onclick="redo()"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="transform:scaleX(-1)"><path d="M9 6L4 11l5 5"/><path d="M4 11h10a5 5 0 0 1 0 10h-4"/></svg></button><span class="sep"></span><button class="ib" id="bHelp" title="Shortcuts" onclick="$('#help').style.display='grid'"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 5h16v11H10l-4 4v-4H4z"/><path d="M8 9h8M8 12h5"/></svg></button><button class="ib" id="bTT" title="Show / hide truth table" onclick="tgl()"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button><span class="sep"></span><span class="pw"><button class="ib" id="colbtn" title="Wire color" style="width:auto;padding:0 8px;gap:4px" onclick="{const q=$('#colpop');q.style.display=q.style.display=='flex'?'none':'flex'}"><span id="colsw" style="width:22px;height:22px;border-radius:4px;background:#e5484d;display:inline-block"></span>▾</button><div id="colpop"><span id="cols"></span></div></span><button class="ib" id="bRot" title="Rotate (R)" onclick="rot()"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M20 12a8 8 0 1 1-3-6.2"/><path d="M20 4v5h-5"/></svg></button><span class="sp"></span><select id="ex" onchange="loadEx(this.value)"><option value="">Starter examples</option><option value="blank">Blank</option><option value="dec">Decoder + display (complete)</option><option value="led">Single LED + resistor</option><option value="gate">Logic gate IC (74HC08 AND + LED)</option></select><button class="b go" id="run" onclick="toggleRun()">▶ Start Simulation</button><button class="b" onclick="openDlg(1)">Save</button><button class="b" onclick="openDlg(0)">Load</button></div>
+<div id="main"><div id="vctl"><button class="rb" title="Fit to view" onclick="fit()"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button><button class="rb" title="Zoom in" onclick="zoom(1.2)">+</button><button class="rb" title="Zoom out" onclick="zoom(1/1.2)">−</button></div><svg id="cv" role="img" aria-label="Breadboard workspace"><g id="world"><g id="board"></g><g id="parts"></g><g id="wires"></g><rect id="band" fill="#2f80ed22" stroke="#2f80ed" display="none"/></g></svg>
+<div id="insp" class="card" style="display:none"></div>
+<button class="b" id="sideTab" onclick="togSide()" title="Show / hide the components panel">❯</button>
+<aside id="side"><div class="ph"><label class="cs"><small>Components</small><select id="cat" onchange="drawLib()"></select></label><button class="ib" title="Grid / list" onclick="$('#lib').classList.toggle('list')"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 6h12M8 12h12M8 18h12M4 6h.5M4 12h.5M4 18h.5"/></svg></button></div><input id="q" placeholder="Search" style="width:100%;box-sizing:border-box"><div id="lib"></div></aside></div>
+<div id="truth"></div>
+<div id="tip" hidden></div><div id="toasts"></div>
+<div id="dlg" onclick="if(event.target==this)closeDlg()"><div class="box" role="dialog" aria-label="Save / Load">
+ <button class="x" title="Close" onclick="closeDlg()">&times;</button>
+ <h3>Save / Load</h3>
+ <div class="dtabs"><button class="tab on" id="tabS" onclick="dlgTab(1)">Save</button><button class="tab" id="tabL" onclick="dlgTab(0)">Load</button></div>
+ <div id="pS">
+  <p class="mut">Download your circuit as a file you can open again later, or copy it as text.</p>
+  <label class="lb">File name<input id="fnm" type="text" spellcheck="false" autocomplete="off"></label>
+  <div class="row"><button class="b pri" onclick="saveFile()">Save as file</button><button class="b" onclick="copyTxt()">Copy text</button></div>
+  <label class="lb">Circuit data<textarea id="ta" readonly></textarea></label>
+ </div>
+ <div id="pL" hidden>
+  <p class="mut">Open a saved Circu file, drop one onto this window, or paste saved text below.</p>
+  <div class="row"><button class="b pri" onclick="$('#fl').click()">Open file&hellip;</button><span id="fname" class="mut">No file chosen</span><input type="file" id="fl" accept=".json,application/json" hidden></div>
+  <label class="lb">Or paste text<textarea id="lt" placeholder="Paste saved circuit text here" spellcheck="false"></textarea></label>
+  <div class="row"><button class="b pri" onclick="loadTxt($('#lt').value)">Load from text</button></div>
+ </div>
+ <div id="dst" class="mut" aria-live="polite"></div>
+</div></div>
+<div id="about" onclick="if(event.target==this)closeAbout()"><div class="box ab" role="dialog" aria-label="About Circu">
+ <button class="x" title="Close" onclick="closeAbout()">&times;</button>
+ <div class="logo big"><i style="background:#e5484d">C</i><i style="background:#22b24c">I</i><i style="background:#2f80ed">R</i><i style="background:#f5a800">U</i></div>
+ <h3>Circu</h3><p class="mut">Electronics circuit simulator</p><p class="mut" id="ver"></p>
+ <div class="dev"><small>Developed by</small><b id="dev"></b></div>
+</div></div>
+<div id="help" onclick="this.style.display='none'"><div><b>Shortcuts</b><p>Scroll = zoom · drag empty space (or middle-drag) = pan · R rotate · Delete remove · Ctrl+Z / Ctrl+Y undo/redo · Ctrl+C copy · Ctrl+V paste · Ctrl+D duplicate · Shift-click multi-select · Shift+drag = box select · Esc cancels a wire. Click a hole or pin, then another, to add a wire. To draw a bent wire click a start hole, click empty space for each corner (Backspace removes the last corner), then click the end hole. Drag a wire to add a bend; drag a bend point to move it; double-click a bend point to remove it. The ❯ tab (or Components) hides the parts panel, and the – button on the part card minimizes it.</p></div></div>
+
+<!-- Scripts are classic (non-module) files sharing one global scope. Order matters: keep main.js last. -->
+<script src="js/core.js"></script>
+<script src="js/parts.js"></script>
+<script src="js/board.js"></script>
+<script src="js/state.js"></script>
+<script src="js/simulator.js"></script>
+<script src="js/renderer.js"></script>
+<script src="js/wires.js"></script>
+<script src="js/snapping.js"></script>
+<script src="js/pointer.js"></script>
+<script src="js/library.js"></script>
+<script src="js/actions.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/examples.js"></script>
+<script src="js/about.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
